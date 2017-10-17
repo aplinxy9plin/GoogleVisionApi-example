@@ -1,8 +1,6 @@
 <?php
 	$countResult = 5;
 	$image = file_get_contents('outputBase64.txt');
-	//$imageVar = ;
-	//var_dump($imageVar);
 	$jsonRequest = '{
   "requests":[
     {
