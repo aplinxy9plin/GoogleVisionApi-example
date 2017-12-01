@@ -36,7 +36,26 @@ function request($jsonRequest){
   $resultDecode = json_decode($result); 
   return $resultDecode;
 }
-$json = array(createJSON('LOGO_DETECTION'), createJSON('WEB_DETECTION'), createJSON('TEXT_DETECTION'));
-for ($i=0; $i < 3; $i++) { 
-  var_dump(request($json[$i]));
+function data_base(){
+  $mysqli = new mysqli("127.0.0.1","top4ek","q2w3e4r5","shop");
+  $mysqli->set_charset("utf8");
+  $result = $mysqli->query("SELECT * FROM products");
+  if ($result->num_rows > 0) {
+    $x = 0;
+      while($row = $result->fetch_assoc()) {
+          $data[$x] = $row['name'];
+          $x++;
+      }
+      return $data;
+  }
+}
+$db_name = data_base();
+$json = array(createJSON('LOGO_DETECTION'), createJSON('WEB_DETECTION'), createJSON('TEXT_DETECTION'), createJSON('DOCUMENT_TEXT_DETECTION'));
+for ($i=0; $i < 4; $i++) { 
+  $encoded = json_encode(request($json[$i]), JSON_UNESCAPED_UNICODE);
+  foreach ($db_name as $key) {
+    if(strpos($encoded, $key) !== false){
+      echo "Название: ";echo $key;
+    }
+  }
 }
